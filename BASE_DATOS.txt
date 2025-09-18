@@ -1,0 +1,72 @@
+CREATE DATABASE My_Hospital_x;
+USE My_Hospital_x;
+
+CREATE TABLE PacientesZ (
+	paciente_id int primary key,
+	nombre varchar(100) not null,
+	apellido varchar(100) not null,
+	fecha_nacimiento date not null,
+	telefono varchar(15),
+	direccion varchar(255)
+);
+
+CREATE TABLE DoctoresZ (
+	doctor_id int primary key,
+	nombre varchar(100) not null,
+	apellido varchar(100) not null,
+	especialidad varchar(100) not null,
+	telefono varchar(15),
+	email varchar(100)
+);
+
+CREATE TABLE Consultas (
+	consulta_id int primary key,
+	paciente_id int,
+	doctor_id int,
+	fecha_consulta date not null,
+	diagnostico text,
+	tratamiento text,
+	foreign key (paciente_id) references PacientesZ(paciente_id),
+	foreign key (doctor_id) references DoctoresZ(doctor_id)
+);
+
+INSERT INTO PacientesZ (paciente_id,nombre, apellido, fecha_nacimiento, telefono, direccion)
+VALUES 
+(1,'Carlos', 'Ramírez', '1985-04-12', '(+51)987654321', 'Av. Siempre Viva 123'),
+(2,'María', 'González', '1992-09-25', '912345678', 'Calle Los Olivos 456'),
+(3,'Jorge', 'Mendoza', '1978-01-30', '976543210', 'Jr. Las Flores 789'),
+(4,'Ana', 'Torres', '1995-07-19', '911223344', 'Av. Primavera 101'),
+(5,'Luis', 'Martínez', '1980-02-11', '933221144', 'Calle Central 202'),
+(6,'Sofía', 'Morales', '2000-10-08','922334455', 'Av. Libertad 303'),
+(7,'Pedro', 'Fernández', '1975-05-05', '944556677', 'Calle Norte 404'),
+(8,'Lucía', 'Paredes', '1998-12-22',  '977665544', 'Jr. Sur 505'),
+(9,'Andrés', 'López', '1987-03-17',  '988776655', 'Av. Este 606'),
+(10,'Valeria', 'Castro', '1993-06-29',  '966554433', 'Calle Oeste 707');
+
+INSERT INTO DoctoresZ (doctor_id,nombre, apellido, especialidad, telefono, email)
+VALUES
+(1,'Javier', 'Pérez', 'Cardiología', '956789123', 'jperez@hospital.com'),
+(2,'Lucía', 'Fernández', 'Pediatría', '934567890', 'lfernandez@hospital.com'),
+(3,'Andrés', 'Lozano', 'Neurología', '945678901', 'alozano@hospital.com'),
+(4,'Marcos', 'Ruiz', 'Dermatología', '955443322', 'mruiz@hospital.com'),
+(5,'Claudia', 'Reyes', 'Ginecología', '933221100', 'creyes@hospital.com'),
+(6,'Fernando', 'Vega', 'Traumatología', '966778899', 'fvega@hospital.com'),
+(7,'Patricia', 'Cárdenas', 'Oncología', '977889900', 'pcardenas@hospital.com'),
+(8,'Roberto', 'Salazar', 'Oftalmología', '922110099', 'rsalazar@hospital.com'),
+(9,'Elena', 'Rojas', 'Psiquiatría', '955667788', 'erojas@hospital.com'),
+(10,'Miguel', 'Herrera', 'Gastroenterología', '988110022', 'mherrera@hospital.com');
+
+INSERT INTO Consultas (consulta_id,paciente_id, doctor_id, fecha_consulta, diagnostico, tratamiento)
+VALUES
+(1,1, 1, '2025-09-15', 'Hipertensión arterial', 'Dieta baja en sal y medicación'),
+(2,2, 2, '2025-09-16', 'Gripe común', 'Reposo y paracetamol'),
+(3,3, 3, '2025-09-17', 'Migraña crónica', 'Analgesia y control neurológico'),
+(4, 4,4, '2025-09-04', 'Acné severo', 'Tratamiento dermatológico especializado'),
+(5,5, 5, '2025-09-05', 'Chequeo prenatal', 'Vitaminas y control mensual'),
+(6,6, 6, '2025-09-06', 'Fractura de pierna', 'Inmovilización con yeso'),
+(7,7, 7, '2025-09-07', 'Cáncer de piel', 'Biopsia y tratamiento oncológico'),
+(8,8, 8, '2025-09-08', 'Miopía', 'Receta de lentes correctivos'),
+(9,9, 9, '2025-09-09', 'Ansiedad generalizada', 'Terapia psicológica y medicación'),
+(10,10, 10, '2025-09-10', 'Gastritis crónica', 'Dieta blanda y omeprazol');
+select*from Consultas
+exec sp_changedbowner'SA'
