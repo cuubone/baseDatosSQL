@@ -1,0 +1,107 @@
+
+create database PCMATUTE
+
+use PCMATUTE
+
+
+CREATE TABLE libro (
+	libro_id char primary key,
+	titulo varchar(30) not null,
+	editorial varchar(30) not null,
+	area varchar(30) not null,
+	cover_url varchar(120),
+	digital_url varchar(120)
+);
+
+CREATE TABLE autor (
+	autor_id char primary key,
+	nombre varchar(50) not null,
+	nacionalidad varchar(50) not null,
+
+);
+
+CREATE TABLE libro_autro (
+	consulta_id char primary key,
+	libro_id char,
+	autor_id char,
+
+	foreign key (libro_id) references libro(libro_id),
+	foreign key (autor_id) references autor(autor_id)
+);
+create table usuarios (
+	usuario_id char primary key,
+	nombre varchar(50),
+	programa varchar(50),
+	fecha_nacimineto date,
+	correo varchar(50),
+	password_usuario varchar(50)
+
+); 
+
+create table prestamo (
+	id_pretamo char primary key,
+	fecha_prestamo date,
+	fecha_devolucion date,
+	usuario_id char,
+	libro_id char,
+	foreign key (usuario_id) references usuarios(usuario_id),
+	foreign key (libro_id) references libro(libro_id)
+);
+
+insert into libro (libro_id,titulo,editorial,area,cover_url,digital_url) values
+(1,'manuel','cruz_1','area_1','cover_1','url_1'),
+(2,'maria','cruz_2','area_2','cover_2','url_2'),
+(3,'joselin','cruz_3','area_3','cover_3','url_3'),
+(4,'tatiana','cruz_4','area_4','cover_4','url_4'),
+(5,'estefania','cruz_5','area_5','cover_5','url_5');
+
+insert into autor(autor_id,nombre,nacionalidad) values
+(1,'miguel','peruana'),
+(2,'adrian','venezolana'),
+(3,'manuel','colombiana'),
+(4,'german','ecuatoriana'),
+(5,'candy','espanol');
+
+insert into usuarios(usuario_id,nombre,programa,fecha_nacimineto,correo,password_usuario) values
+(1,'user_manuel','progr_cruz_1','1990-05-12','cover_1@gmail.com','pass_url_1'),
+(2,'user_maria','progr_cruz_2','1970-02-15','cover_2@gmail.com','pass_url_2'),
+(3,'user_joselin','progr_cruz_3','1960-01-15','cover_3@gmail.com','pass_url_3'),
+(4,'user_tatiana','progr_cruz_4','1980-05-12','cover_4@gmail.com','pass_url_4'),
+(5,'user_estefania','progr_cruz_5','1990-05-11','cover_5@gmail.com','pass_url_5');
+
+insert into libro_autro(consulta_id,libro_id,autor_id) values
+(1,1,1),
+(2,2,2),
+(3,3,3),
+(4,4,4),
+(5,5,5);
+
+insert into prestamo(id_pretamo,fecha_prestamo,fecha_devolucion,usuario_id,libro_id) values
+(1,'1991-01-12','1990-05-22',1,1),
+(2,'1992-02-12','1970-02-25',2,2),
+(3,'1993-03-12','1960-01-25',3,3),
+(4,'1994-04-12','1980-05-22',4,4),
+(5,'1995-05-12','1990-05-21',5,5);
+
+exec sp_changedbowner 'SA'
+--CONSULTAS
+--1
+select usuario_id,nombre, correo from usuarios;
+--2
+select titulo,editorial from libro;
+--3
+select * from autor where nacionalidad= 'colombiana' ;
+--4
+select * from usuarios where fecha_nacimineto > '1965-1-1';
+--5
+select count(*)  from usuarios;
+--6
+select * from prestamo where fecha_prestamo > '2025-08-15';
+--7
+select nombre from usuarios where nombre like '%u%';
+--8
+select * from prestamo order by fecha_prestamo asc ;
+--9 
+select * from libro where titulo like 'l%';
+--10
+select * from autor order by nacionalidad asc ;
