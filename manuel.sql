@@ -1,0 +1,36 @@
+--CREATE DATABASE Mi_tienda;
+--GO
+-- 
+--Mostrar todas las bases de datos
+--
+--select name from sys.databases;
+--GO
+--
+use Mi_tienda;
+go
+--create table clietes (		
+--   cliente_id int primary key,
+--   nombre varchar (100),
+--   pais varchar (50),
+--   emails varchar (100)
+--);
+--go
+--exec sp_rename 'manuel','clientes';
+--	
+--select name from sys.tables;
+--
+--create table productos (	
+--    producto_id int primary key,
+--    nombre varchar (100),
+--    precio decimal(10,2),
+--    stock int
+--);
+--insert into clientes (cliente_id, nombre , pais , emails) values 
+--(6,'jose laso', 'mexico' , 'laso@gmail.com');
+--select column_name from information_schema.columns where table_name = 'clientes';
+--select top 1 cliente_id from clientes order by cliente_id asc;
+--update clientes set pais = 'mongolia' where cliente_id = 6; 
+--go
+--insert into clientes (cliente_id, nombre , pais , emails) values
+--(7, 'manuel cruz', 'peru', 'sorrinoka@gmail.com');
+select * from clientes where len(nombre)= (select min(len(nombre)) from clientes);
