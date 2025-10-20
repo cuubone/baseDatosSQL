@@ -1,0 +1,1 @@
+sqlcmd -S DESKTOP-C2GR3LC -E -i "C:\ruta\script.sql"
