@@ -1,0 +1,153 @@
+SELECT
+    fk.name AS nombre_foreign_key,
+    tr.name AS tabla_hija,
+    cr.name AS columna_hija,
+    tp.name AS tabla_padre,
+    cp.name AS columna_padre
+FROM sys.foreign_keys AS fk
+INNER JOIN sys.foreign_key_columns AS fkc
+    ON fk.object_id = fkc.constraint_object_id
+INNER JOIN sys.tables AS tr
+    ON tr.object_id = fkc.parent_object_id
+INNER JOIN sys.columns AS cr
+    ON cr.object_id = tr.object_id AND cr.column_id = fkc.parent_column_id
+INNER JOIN sys.tables AS tp
+    ON tp.object_id = fkc.referenced_object_id
+INNER JOIN sys.columns AS cp
+    ON cp.object_id = tp.object_id AND cp.column_id = fkc.referenced_column_id
+WHERE 
+    (tr.name = 'nombre_tabla_1' AND tp.name = 'nombre_tabla_2')
+    OR (tr.name = 'nombre_tabla_2' AND tp.name = 'nombre_tabla_1');
+
+----------------------------------------------------------------------------------------
+
+
+SELECT 
+    A.NOMBRE AS Alumno,
+    C.NOMBRE_CURSO AS Curso,
+    C.PROFESOR AS Profesor
+FROM 
+    ALUMNOS A
+INNER JOIN 
+    CURSOS C
+ON 
+    A.ID_CURSO = C.ID_CURSO;
+---------------------------------------------------------------------------------------------
+
+SELECT 
+    A.NOMBRE AS Alumno,
+    C.NOMBRE_CURSO AS Curso,
+    P.NOMBRE_PROFESOR AS Profesor
+FROM 
+    ALUMNOS A
+INNER JOIN 
+    CURSOS C
+    ON A.ID_CURSO = C.ID_CURSO
+INNER JOIN 
+    PROFESORES P
+    ON C.ID_PROFESOR = P.ID_PROFESOR;
+
+
+------------------------------------------------------------------------------------------------------------------
+
+CREATE PROCEDURE MostrarAlumnosCursos
+AS
+BEGIN
+    SELECT 
+        A.NOMBRE AS Alumno,
+        C.NOMBRE_CURSO AS Curso,
+        P.NOMBRE_PROFESOR AS Profesor
+    FROM 
+        ALUMNOS A
+    INNER JOIN 
+        CURSOS C ON A.ID_CURSO = C.ID_CURSO
+    INNER JOIN 
+        PROFESORES P ON C.ID_PROFESOR = P.ID_PROFESOR;
+END;
+
+
+EXEC MostrarAlumnosCursos;
+
+
+
+------------------------------------------------------------------------------------------------------
+
+
+CREATE PROCEDURE InsertarAlumno
+    @Nombre VARCHAR(50),
+    @IdCurso INT
+AS
+BEGIN
+    INSERT INTO ALUMNOS (NOMBRE, ID_CURSO)
+    VALUES (@Nombre, @IdCurso);
+
+    PRINT 'Alumno insertado correctamente';
+END;
+
+
+EXEC InsertarAlumno 
+    @Nombre = 'Carlos Rojas', 
+    @IdCurso = 101;
+
+
+----------------------------------------------------------------------------------------------------------------------
+
+
+CREATE PROCEDURE ActualizarAlumno
+    @IdAlumno INT,
+    @NuevoNombre VARCHAR(50),
+    @NuevoIdCurso INT
+AS
+BEGIN
+    UPDATE ALUMNOS
+    SET 
+        NOMBRE = @NuevoNombre,
+        ID_CURSO = @NuevoIdCurso
+    WHERE 
+        ID_ALUMNO = @IdAlumno;
+
+    PRINT 'Alumno actualizado correctamente';
+END;
+
+
+
+
+EXEC ActualizarAlumno 
+    @IdAlumno = 1,
+    @NuevoNombre = 'Carlos Ramírez',
+    @NuevoIdCurso = 102;
+
+
+---------------------------------------------------------------------------------------------------------
+
+
+
+CREATE PROCEDURE EliminarAlumno
+    @IdAlumno INT
+AS
+BEGIN
+    DELETE FROM ALUMNOS
+    WHERE ID_ALUMNO = @IdAlumno;
+
+    PRINT 'Alumno eliminado correctamente';
+END;
+
+
+
+EXEC EliminarAlumno @IdAlumno = 1;
+
+
+
+------------------------------------------------------------------------------------------------
+
+
+
+SELECT 
+    COLUMN_NAME AS Nombre_Columna,
+    DATA_TYPE AS Tipo_Dato,
+    CHARACTER_MAXIMUM_LENGTH AS Longitud
+FROM 
+    INFORMATION_SCHEMA.COLUMNS
+WHERE 
+    TABLE_NAME = 'ALUMNOS';
+
